@@ -1,32 +1,34 @@
-# Load libraries
 library(gert)
 library(credentials)
 
-# Step 0: Set GitHub Personal Access Token
-credentials::set_github_pat()  # Paste your PAT in the popup
+# Step 0: Set your GitHub Personal Access Token
+credentials::set_github_pat()  # paste your PAT in the popup
 
-# Step 1: Fetch remote branches so local knows about 'origin/main'
-gert::git_fetch("origin")
+# Step 1: Make sure your local branch exists and tracks GitHub
+gert::git_fetch("origin")  # get remote info
 
-# Step 2: Check if local 'main' branch exists
 branches <- gert::git_branch_list()
 
 if(!("main" %in% branches$name)) {
-  # Create local 'main' branch from the remote
+  # create local 'main' branch from remote
   gert::git_branch_create("main", checkout = TRUE, ref = "origin/main")
 } else {
-  # Local 'main' exists → switch to it
+  # switch to main branch
   gert::git_branch_checkout("main")
 }
 
-# Step 3: Pull latest changes from GitHub
-gert::git_pull()
+# -------------------------------
+# Now your original assignment code
+# -------------------------------
 
-# Step 4: Stage all new or changed files
-gert::git_add(dir(all.files = TRUE))
+# Pull most recent changes from GitHub
+gert::git_pull() 
 
-# Step 5: Commit all staged files
-gert::git_commit_all("Add or update files")
+# Stage all new or edited files
+gert::git_add(dir(all.files = TRUE)) 
 
-# Step 6: Push changes to GitHub
-gert::git_push()
+# Commit the changes
+gert::git_commit_all("my first commit") 
+
+# Push the commit to GitHub
+gert::git_push() 
